@@ -1,0 +1,169 @@
+<div class="providers-page">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Provider Control</p>
+      <h1>Manage Providers</h1>
+      <p class="subtitle">Approve new partners, monitor quality, and manage provider availability in one dashboard.</p>
+    </div>
+
+    <label class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm10 3-4.2-4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search by name, service, city" />
+      <button
+        type="button"
+        class="clear-btn"
+        *ngIf="search.trim()"
+        (click)="clearSearch()">
+        Clear
+      </button>
+    </label>
+  </header>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <small>Total Providers</small>
+      <strong>{{ totalProvidersCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Pending Requests</small>
+      <strong>{{ pendingProvidersCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Approved Providers</small>
+      <strong>{{ approvedProvidersCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Currently Available</small>
+      <strong>{{ availableProvidersCount }}</strong>
+    </article>
+  </section>
+
+  <section class="group-wrap" *ngIf="filteredPendingProviders.length > 0 || filteredApprovedProviders.length > 0; else emptyState">
+    <div class="group" *ngIf="filteredPendingProviders.length > 0">
+      <div class="group-head">
+        <h2>New Requests</h2>
+        <span class="count-pill">{{ filteredPendingProviders.length }}</span>
+      </div>
+      <p>Providers waiting for admin approval or rejection.</p>
+
+      <section class="cards">
+        <article class="provider-card pending-card" *ngFor="let provider of filteredPendingProviders; trackBy: trackByProviderId">
+          <div class="top">
+            <div class="identity">
+              <div class="avatar">
+                <ng-container *ngIf="getAvatarSrc(provider) as avatarSrc; else pendingInitialsAvatar">
+                  <img
+                    [src]="avatarSrc"
+                    [alt]="(provider.name || 'Provider') + ' profile image'"
+                    (error)="onAvatarError(provider._id)" />
+                </ng-container>
+                <ng-template #pendingInitialsAvatar>{{ getInitials(provider.name) }}</ng-template>
+              </div>
+              <div>
+                <h3>{{ provider.name || 'Provider' }}</h3>
+                <p class="email">{{ provider.email || 'N/A' }}</p>
+              </div>
+            </div>
+            <span class="pill pending">Pending Approval</span>
+          </div>
+
+          <div class="meta-grid">
+            <p class="meta"><span>Service</span>{{ provider.providerService || 'Service not set' }}</p>
+            <p class="meta"><span>City</span>{{ provider.city || 'City not set' }}</p>
+            <p class="meta"><span>Rating</span>{{ provider.averageRating || 0 }} ({{ provider.ratingCount || 0 }} reviews)</p>
+            <p class="meta"><span>Availability</span>{{ provider.isAvailable === false ? 'Unavailable' : 'Available' }}</p>
+          </div>
+
+          <div class="actions">
+            <button
+              class="approve-btn"
+              [disabled]="isBusy(provider._id)"
+              (click)="approve(provider._id)">
+              {{ isBusy(provider._id) ? 'Updating...' : 'Approve' }}
+            </button>
+
+            <button
+              class="reject-btn"
+              [disabled]="isBusy(provider._id)"
+              (click)="reject(provider)">
+              {{ isBusy(provider._id) ? 'Updating...' : 'Reject' }}
+            </button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div class="group" *ngIf="filteredApprovedProviders.length > 0">
+      <div class="group-head">
+        <h2>Working In SMS</h2>
+        <span class="count-pill">{{ filteredApprovedProviders.length }}</span>
+      </div>
+      <p>Approved providers currently active on the platform.</p>
+
+      <section class="cards">
+        <article class="provider-card approved-card" *ngFor="let provider of filteredApprovedProviders; trackBy: trackByProviderId">
+          <div class="top">
+            <div class="identity">
+              <div class="avatar">
+                <ng-container *ngIf="getAvatarSrc(provider) as avatarSrc; else approvedInitialsAvatar">
+                  <img
+                    [src]="avatarSrc"
+                    [alt]="(provider.name || 'Provider') + ' profile image'"
+                    (error)="onAvatarError(provider._id)" />
+                </ng-container>
+                <ng-template #approvedInitialsAvatar>{{ getInitials(provider.name) }}</ng-template>
+              </div>
+              <div>
+                <h3>{{ provider.name || 'Provider' }}</h3>
+                <p class="email">{{ provider.email || 'N/A' }}</p>
+              </div>
+            </div>
+            <span class="pill approved">Approved</span>
+          </div>
+
+          <div class="meta-grid">
+            <p class="meta"><span>Service</span>{{ provider.providerService || 'Service not set' }}</p>
+            <p class="meta"><span>City</span>{{ provider.city || 'City not set' }}</p>
+            <p class="meta"><span>Rating</span>{{ provider.averageRating || 0 }} ({{ provider.ratingCount || 0 }} reviews)</p>
+            <p class="meta"><span>Availability</span>{{ provider.isAvailable === false ? 'Unavailable' : 'Available' }}</p>
+          </div>
+
+          <div class="actions">
+            <button
+              class="toggle-btn"
+              [disabled]="isBusy(provider._id)"
+              (click)="toggleAvailability(provider._id)">
+              {{ isBusy(provider._id) ? 'Updating...' : (provider.isAvailable === false ? 'Set Available' : 'Set Unavailable') }}
+            </button>
+
+            <button
+              class="delete-btn"
+              [disabled]="isDeleting(provider._id)"
+              (click)="deleteProvider(provider)">
+              {{ isDeleting(provider._id) ? 'Deleting...' : 'Delete' }}
+            </button>
+          </div>
+        </article>
+      </section>
+    </div>
+  </section>
+
+  <ng-template #emptyState>
+    <section class="empty-state">
+      <p class="empty-title">No providers found</p>
+      <p class="empty-text">Try a different search term or clear search to see all providers.</p>
+      <button
+        type="button"
+        class="clear-btn"
+        *ngIf="search.trim()"
+        (click)="clearSearch()">
+        Clear Search
+      </button>
+    </section>
+  </ng-template>
+</div>

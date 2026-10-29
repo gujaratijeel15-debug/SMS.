@@ -1,0 +1,57 @@
+<div class="container mt-4">
+
+  <h2 class="mb-3">Welcome 👋</h2>
+
+  <div class="card shadow p-4 mb-4">
+
+    <h5 class="mb-3">Book a Service</h5>
+
+    <div class="row g-2">
+      <div class="col-md-9">
+        <input
+          class="form-control"
+          placeholder="Enter service name (Cleaning, Repair, etc.)"
+          [(ngModel)]="serviceId">
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100" (click)="createBooking()">
+          Book Now
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+      Your Bookings
+    </div>
+
+    <table class="table mb-0">
+
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Provider</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let b of bookings">
+          <td>{{ b.service }}</td>
+          <td>{{ b.provider?.name }}</td>
+          <td>
+            <span class="badge bg-warning" *ngIf="b.status === 'pending'">Pending</span>
+            <span class="badge bg-success" *ngIf="b.status === 'accepted'">Accepted</span>
+            <span class="badge bg-danger" *ngIf="b.status === 'rejected'">Rejected</span>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

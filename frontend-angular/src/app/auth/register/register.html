@@ -1,0 +1,88 @@
+<div class="logo">
+  SMS <span class="dot"></span>
+</div>
+<br/>
+<h3>Create your account</h3>
+<p class="sub-text">Start managing your services today</p>
+
+<!-- NAME -->
+
+<input
+class="form-control"
+placeholder="Full name"
+[(ngModel)]="name"
+/>
+
+<!-- EMAIL -->
+
+<input
+class="form-control"
+placeholder="Email address"
+type="email"
+[(ngModel)]="email"
+/>
+
+<!-- PASSWORD -->
+
+<input
+class="form-control"
+type="password"
+placeholder="Password"
+[(ngModel)]="password"
+/>
+
+<!-- CITY -->
+
+<input
+class="form-control"
+placeholder="City"
+[(ngModel)]="city"
+/>
+
+<!-- ROLE -->
+
+<select
+class="form-control"
+[(ngModel)]="role"
+
+>
+
+  <option value="user">User</option>
+  <option value="provider">Service Provider</option>
+</select>
+
+<!-- PROVIDER SERVICE -->
+<select
+class="form-control"
+*ngIf="role === 'provider'"
+[(ngModel)]="providerService">
+  <option value="" disabled selected>Select your service</option>
+  <option *ngFor="let item of providerServices" [value]="item">{{ item }}</option>
+</select>
+
+<!-- USER ADDRESS -->
+
+<input
+class="form-control"
+*ngIf="role === 'user'"
+placeholder="Address"
+[(ngModel)]="address"
+/>
+
+<!-- BUTTON -->
+
+<button class="btn-primary" (click)="register()">
+Create account </button>
+
+<!-- ERROR MESSAGE -->
+
+<p class="error" *ngIf="error">
+  {{ error }}
+</p>
+
+<!-- LOGIN LINK -->
+
+<p class="switch">
+  Already have an account?
+  <a (click)="goLogin()" class="login-link">Login</a>
+</p>

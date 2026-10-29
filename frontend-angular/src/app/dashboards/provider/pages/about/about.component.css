@@ -1,0 +1,157 @@
+.about-page{
+  background:#000;
+  color:white;
+  font-family:Inter,sans-serif;
+}
+
+.about-hero{
+  position:relative;
+  text-align:center;
+  padding:120px 20px 80px;
+  overflow:hidden;
+}
+
+.hero-content h1{
+  font-size:48px;
+  margin-bottom:12px;
+}
+
+.hero-content p{
+  color:#b0a99f;
+  max-width:600px;
+  margin:auto;
+}
+
+.hero-glow{
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:#22c55e;
+  filter:blur(200px);
+  opacity:.2;
+  top:-100px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.about-section{
+  padding:80px 20px;
+}
+
+.about-grid{
+  max-width:1100px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:40px;
+}
+
+.about-card{
+  background:rgba(255,255,255,0.03);
+  padding:30px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.about-card ul{
+  margin-top:15px;
+  line-height:2;
+}
+
+.features{
+  padding:100px 20px;
+  text-align:center;
+}
+
+.feature-grid{
+  margin-top:50px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+  max-width:1000px;
+  margin-inline:auto;
+}
+
+.feature-card{
+  padding:40px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  transition:.3s;
+}
+
+.feature-card:hover{
+  transform:translateY(-8px);
+  border-color:#22c55e;
+}
+
+.feature-card svg{
+  width:32px;
+  height:32px;
+  stroke:#22c55e;
+  fill:none;
+  stroke-width:2;
+  margin-bottom:15px;
+}
+
+.feature-card p{
+  color:#b0a99f;
+}
+
+.mission{
+  padding:80px 20px;
+  max-width:1000px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+
+.mission-card{
+  padding:40px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.terms-section{
+  text-align:center;
+  padding:80px 20px;
+}
+
+.terms-card{
+  max-width:800px;
+  margin:auto;
+  padding:40px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-section{
+  max-width:900px;
+  margin:auto;
+  padding:80px 20px;
+}
+
+.faq-item{
+  padding:20px;
+  margin-bottom:15px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-item p{
+  color:#b0a99f;
+}
+
+@media(max-width:768px){
+  .about-grid{
+    grid-template-columns:1fr;
+  }
+  .mission{
+    grid-template-columns:1fr;
+  }
+}
+

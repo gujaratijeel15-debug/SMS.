@@ -1,0 +1,166 @@
+<!-- HERO SECTION -->
+<section class="hero">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      SMS <span class="dot"></span>
+    </div>
+
+    <div class="nav-links">
+
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/auth/login">Login</a>
+        <a routerLink="/auth/register" class="btn-nav">Get Started</a>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/user/dashboard">Dashboard</a>
+        <a routerLink="/user/book" class="btn-nav">Book Service</a>
+        <a (click)="logout()">Logout</a>
+      </ng-container>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO CONTENT -->
+  <div class="hero-wrapper">
+
+    <div class="hero-content">
+      <h1>
+        Manage Your <span>Home Services</span><br />
+        Smart & Easy
+      </h1>
+
+      <p>
+        Book and manage services in one powerful platform.
+        Fast, secure, and reliable.
+      </p>
+
+      <div class="hero-buttons">
+
+        <ng-container *ngIf="!isLoggedIn">
+          <button routerLink="/auth/register" class="btn-primary">
+            Get Started
+          </button>
+
+          <button routerLink="/auth/login" class="btn-outline">
+            Login
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <button routerLink="/user/book" class="btn-primary">
+            Book Service
+          </button>
+          
+
+          <button routerLink="/user/dashboard" class="btn-outline">
+            Go to Dashboard
+          </button>
+        </ng-container>
+
+      </div>
+    </div>
+
+
+    <!-- HERO IMAGE (ADD YOUR IMAGE URL HERE) -->
+    <div class="hero-image">
+      <img src="assets/auth/cleaning service-bro.png" alt="service illustration">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SERVICES -->
+<section class="services">
+  <h2>Our Services</h2>
+
+  <div class="service-grid">
+
+    <div class="card">
+      <h3>Home Cleaning</h3>
+      <p>Professional cleaning services for your home.</p>
+    </div>
+
+    <div class="card">
+      <h3>Plumbing</h3>
+      <p>Expert plumbing solutions at your doorstep.</p>
+    </div>
+
+    <div class="card">
+      <h3>Electrical</h3>
+      <p>Certified electricians for safe installations.</p>
+    </div>
+
+    <div class="card">
+      <h3>Appliance Repair</h3>
+      <p>Repair services for all home appliances.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features">
+
+  <h2>Why Choose SMS?</h2>
+
+  <div class="feature-grid">
+
+ <div class="feature-item">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" class="feature-icon">
+    <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
+  </svg>
+  <h3>Fast Booking</h3>
+  <p>Book services instantly with one click.</p>
+</div>
+
+  <div class="feature-item">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" class="feature-icon">
+    <path d="M12 2l7 4v5c0 5-3.5 9-7 11-3.5-2-7-6-7-11V6l7-4z"/>
+    <path d="M9 12h6"/>
+  </svg>
+  <h3>Secure Platform</h3>
+  <p>Your data and payments are fully protected.</p>
+</div>
+
+ <div class="feature-item">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" class="feature-icon">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+    <path d="M16 11l2 2 4-4"/>
+  </svg>
+  <h3>Trusted Providers</h3>
+  <p>Verified and professional service providers.</p>
+</div>
+
+  </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Start Managing Your Services Today</h2>
+  <p>Join thousands of satisfied customers using SMS.</p>
+
+  <button *ngIf="!isLoggedIn"
+          routerLink="/auth/register"
+          class="btn-primary">
+    Create Account
+  </button>
+
+  <button *ngIf="isLoggedIn"
+          routerLink="/user/book"
+          class="btn-primary">
+    Book Your First Service
+  </button>
+</section>

@@ -1,0 +1,184 @@
+<div class="bookings-page">
+  <header class="page-header">
+    <div>
+      <h1>My Bookings</h1>
+      <p>Track and manage all your service requests</p>
+    </div>
+
+    <div class="controls">
+      <div class="tabs">
+        <button (click)="activeFilter='all'" [class.active]="activeFilter==='all'">All</button>
+        <button (click)="activeFilter='pending'" [class.active]="activeFilter==='pending'">Pending</button>
+        <button (click)="activeFilter='accepted'" [class.active]="activeFilter==='accepted'">Accepted</button>
+        <button (click)="activeFilter='completed'" [class.active]="activeFilter==='completed'">Completed</button>
+        <button (click)="activeFilter='cancelled'" [class.active]="activeFilter==='cancelled'">Cancelled</button>
+        <button (click)="activeFilter='rejected'" [class.active]="activeFilter==='rejected'">Rejected</button>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Search service..."
+        [(ngModel)]="searchTerm"
+        class="search-input">
+    </div>
+    <button class="btn-refresh" (click)="loadBookings()">Refresh</button>
+  </header>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading bookings...</p>
+  </div>
+
+  <div *ngIf="!loading && bookings.length === 0" class="empty-state">
+    <h3>No Bookings Yet</h3>
+    <p>Book your first service to see it here</p><br/>
+    <a routerLink="/user/book" class="btn-primary">Book Service</a>
+  </div>
+
+  <div class="bookings-grid" *ngIf="!loading && bookings.length > 0">
+    <div class="booking-card" *ngFor="let booking of bookings | bookingFilter:activeFilter:searchTerm">
+      <div class="card-header">
+        <span class="status" [ngClass]="getStatusClass(booking.status)">
+          {{ booking.status | titlecase }}
+        </span>
+
+        <span class="date">
+          {{ booking.createdAt | date:'MMM d, y' }}
+        </span>
+      </div>
+
+      <h2>{{ booking.serviceName }}</h2>
+
+      <div class="provider-section" *ngIf="booking.providerId">
+        <img [src]="booking.providerId.avatar || 'assets/provider/avatar.jpg'" class="avatar" alt="provider">
+        <div>
+          <strong>{{ booking.providerId.name }}</strong>
+          <p class="provider-rating-line">
+            <span
+              class="rating-star"
+              [ngClass]="getRatingTone(booking.providerId?.averageRating)"
+              [style.--fill]="getRatingFill(booking.providerId?.averageRating)"
+              aria-hidden="true">
+              &#9733;
+            </span>
+            <span class="provider-rating-text">
+              {{ formatProviderRating(booking.providerId?.averageRating) }}
+              <span *ngIf="booking.providerId?.averageRating > 0">/ 5</span>
+              ({{ booking.providerId?.ratingCount || 0 }})
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="step done"></div>
+        <div class="step" [class.done]="booking.status !== 'pending'"></div>
+        <div class="step" [class.done]="booking.status === 'completed'"></div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-view" (click)="selectedBooking = booking">
+          View Details
+        </button>
+
+        <button *ngIf="booking.status==='pending'" class="btn-cancel" (click)="cancelBooking(booking._id)">
+          Cancel
+        </button>
+
+        <button
+          *ngIf="booking.paymentStatus === 'unpaid' && (booking.status === 'accepted' || booking.status === 'completed')"
+          class="btn-pay"
+          (click)="payOnline(booking._id)">
+          Pay Online
+        </button>
+
+        <button
+          *ngIf="booking.paymentStatus === 'unpaid' && (booking.status === 'accepted' || booking.status === 'completed')"
+          class="btn-cash"
+          [disabled]="booking.paymentMethod === 'cash'"
+          (click)="chooseCash(booking._id)">
+          {{ booking.paymentMethod === 'cash' ? 'Cash Selected' : 'Pay Cash' }}
+        </button>
+
+        <button
+          *ngIf="booking.status === 'completed' && !booking.review?.rating"
+          class="btn-review"
+          (click)="openReviewModal(booking)">
+          Give Review
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" *ngIf="selectedBooking" (click)="selectedBooking=null">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>{{ selectedBooking.serviceName }}</h2>
+    <p>Provider: {{ selectedBooking.providerId?.name }}</p>
+    <p>Status: {{ selectedBooking.status }}</p>
+    <p *ngIf="selectedBooking.status === 'rejected' && selectedBooking.rejectionReason">
+      Rejection Reason: {{ selectedBooking.rejectionReason }}
+    </p>
+    <p>Payment: {{ selectedBooking.paymentStatus }}</p>
+    <p>Price: INR {{ selectedBooking.price }}</p>
+    <p>Date: {{ selectedBooking.createdAt | date:'fullDate' }}</p>
+    <p *ngIf="selectedBooking.review?.rating">
+      Your Rating: {{ selectedBooking.review.rating }} / 5
+    </p>
+    <p *ngIf="selectedBooking.review?.response">
+      Your Review: {{ selectedBooking.review.response }}
+    </p>
+
+    <div class="modal-actions" *ngIf="selectedBooking.paymentStatus === 'unpaid' && (selectedBooking.status === 'accepted' || selectedBooking.status === 'completed')">
+      <button class="btn-pay" (click)="payOnline(selectedBooking._id)">Pay Online</button>
+      <button
+        class="btn-cash"
+        [disabled]="selectedBooking.paymentMethod === 'cash'"
+        (click)="chooseCash(selectedBooking._id)">
+        {{ selectedBooking.paymentMethod === 'cash' ? 'Cash Selected' : 'Pay Cash' }}
+      </button>
+    </div>
+
+    <div class="modal-actions" *ngIf="selectedBooking.status === 'completed' && !selectedBooking.review?.rating">
+      <button class="btn-review" (click)="openReviewModal(selectedBooking)">Give Review</button>
+    </div>
+
+    <button (click)="selectedBooking=null" class="btn-close">Close</button>
+  </div>
+</div>
+
+<div class="modal review-modal" *ngIf="reviewBooking" (click)="closeReviewModal()">
+  <div class="modal-content review-modal-content" (click)="$event.stopPropagation()">
+    <h2>Rate Your Service</h2>
+    <p class="review-subtitle">Service: {{ reviewBooking.serviceName }}</p>
+    <p class="review-subtitle">Provider: {{ reviewBooking.providerId?.name || 'N/A' }}</p>
+
+    <div class="rating-row">
+      <button
+        *ngFor="let star of [1, 2, 3, 4, 5]"
+        type="button"
+        class="star-btn"
+        [class.active]="star <= reviewRating"
+        (click)="setReviewRating(star)">
+        &#9733;
+      </button>
+    </div>
+
+    <textarea
+      rows="5"
+      [(ngModel)]="reviewResponse"
+      placeholder="Write your feedback about provider service..."></textarea>
+
+    <p class="error-text" *ngIf="reviewError">{{ reviewError }}</p>
+
+    <div class="modal-actions">
+      <button class="btn-close-alt" (click)="closeReviewModal()">Cancel</button>
+      <button class="btn-view" [disabled]="reviewLoading" (click)="submitReview()">
+        {{ reviewLoading ? 'Submitting...' : 'Submit Review' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+
+

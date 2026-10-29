@@ -1,0 +1,184 @@
+
+<div class="profile-page fade-in">
+
+  <div class="header-container">
+    <div class="cover-wrapper">
+      <img [src]="profile.cover || defaultCover" class="cover-img">
+      
+      <label class="edit-cover-btn glass-btn" *ngIf="editMode">
+        <input type="file" hidden (change)="onFileSelected($event, 'cover')" accept="image/*">
+        <span>Change Cover</span>
+      </label>
+    </div>
+
+    <div class="user-bar">
+      <div class="avatar-container">
+        <img [src]="profile.avatar || defaultAvatar" class="avatar-img">
+        <label class="edit-avatar-overlay" *ngIf="editMode">
+          <input type="file" hidden (change)="onFileSelected($event, 'avatar')" accept="image/*">
+          <span>📷</span>
+        </label>
+      </div>
+
+      <div class="user-headline">
+     <div class="name-section">
+  
+  <h1 *ngIf="!editMode">
+    {{ profile.name || 'User Name' }}
+  </h1>
+
+  <input *ngIf="editMode" 
+         class="name-input" 
+         [(ngModel)]="profile.name" 
+         placeholder="Enter your name">
+
+  <p class="role">{{ profile.role || 'Provider' | titlecase }}
+</p>
+  
+  <div class="meta-row">
+    <div class="meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L3 18l3 3 6.1-6.1a4 4 0 0 0 5.6-5.6l-3 3z"/></svg>
+        {{ profile.providerService || 'Service not selected' }}
+     </div>
+
+     <div class="meta-item">
+       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+       {{ profile.email }}
+     </div>
+
+     <div class="meta-item">
+       <span class="rating-star" [ngClass]="getRatingTone(profile.averageRating)" [style.--fill]="getRatingFill(profile.averageRating)" aria-hidden="true">&#9733;</span>
+       Rating:
+       {{ profile.averageRating > 0 ? (profile.averageRating | number:'1.1-1') + ' / 5' : 'New Provider' }}
+       ({{ profile.ratingCount || 0 }} reviews)
+     </div>
+  </div>
+
+</div>
+        </div>
+
+        <div class="top-actions">
+          <button
+            class="availability-pill availability-quick"
+            [class.active]="isAvailable"
+            (click)="toggleAvailability()">
+            <span class="dot"></span>
+            {{ isAvailable ? 'Online' : 'Offline' }}
+          </button>
+
+          <button class="btn-primary" (click)="toggleEdit()">
+            {{ editMode ? 'Cancel Edit' : 'Edit Profile' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+
+    <aside class="sidebar glass">
+      <h3>Contact Details</h3>
+      
+      <div class="contact-item">
+        <div class="icon-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <label>Email</label>
+        </div>
+        <div class="value-text">{{ profile.email }}</div>
+      </div>
+
+      <div class="contact-item">
+        <div class="icon-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <label>Phone</label>
+        </div>
+        <div class="value-text" *ngIf="!editMode">{{ profile.phone || 'Not provided' }}</div>
+        <input
+          *ngIf="editMode"
+          [(ngModel)]="profile.phone"
+          (ngModelChange)="profile.phone = sanitizePhoneInput($event)"
+          (input)="onPhoneInput($event)"
+          (keypress)="allowOnlyDigits($event)"
+          (paste)="onPhonePaste($event)"
+          type="tel"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          maxlength="10"
+          placeholder="10-digit phone number">
+      </div>
+
+      <div class="contact-item">
+        <div class="icon-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L3 18l3 3 6.1-6.1a4 4 0 0 0 5.6-5.6l-3 3z"/></svg>
+          <label>Service</label>
+        </div>
+        <div class="value-text" *ngIf="!editMode">{{ profile.providerService || 'Not provided' }}</div>
+        <select *ngIf="editMode" [(ngModel)]="profile.providerService">
+          <option value="" disabled>Select service</option>
+          <option *ngFor="let item of providerServices" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+
+    </aside>
+
+    <main class="main-content">
+      
+      <div class="card glass">
+        <div class="card-header">
+          <h2>Introduction</h2>
+        </div>
+        <div class="card-body">
+          <p *ngIf="!editMode" class="bio-text">
+            {{ profile.about || 'This user has not written a bio yet.' }}
+          </p>
+          <textarea *ngIf="editMode" [(ngModel)]="profile.about" rows="5" placeholder="Tell us about yourself..."></textarea>
+        </div>
+      </div>
+
+      <div class="member-card-wrapper">
+        <div class="member-card glass-card">
+          <div class="card-top">
+<span class="brand">PROVIDER PASS</span>
+          </div>
+          
+          <div class="card-details">
+            <div class="card-row">
+              <label>Member Name</label>
+              <span>{{ profile.name | uppercase }}</span>
+            </div>
+            <div class="card-row-split">
+              <div>
+                <label>Status</label>
+                <span class="status-glow">{{ profile.status || 'Active' | uppercase }}</span>
+              </div>
+              <div>
+                <label>Verified</label>
+                <span>{{ profile.isVerified ? 'YES' : 'NO' }}</span>
+              </div>
+              <div>
+                <label>Service</label>
+                <span>{{ profile.providerService || '-' }}</span>
+              </div>
+              <div>
+                <label>Rating</label>
+                <span>
+                  <span class="rating-star" [ngClass]="getRatingTone(profile.averageRating)" [style.--fill]="getRatingFill(profile.averageRating)" aria-hidden="true">&#9733;</span>
+                  {{ profile.averageRating > 0 ? (profile.averageRating | number:'1.1-1') + ' / 5' : '-' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-area" *ngIf="editMode">
+        <button class="save-btn" (click)="save()" [disabled]="loading">
+          {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+
+

@@ -1,0 +1,55 @@
+<div class="review-page">
+  <div class="review-card" *ngIf="booking">
+    <h2>Rate Your Service</h2>
+    <p class="subtitle">Service: {{ booking.serviceName }}</p>
+    <p class="subtitle">Provider: {{ booking.providerId?.name || 'N/A' }}</p>
+
+    <div class="rating-row">
+      <button
+        *ngFor="let star of [1, 2, 3, 4, 5]"
+        type="button"
+        class="star-btn"
+        [class.active]="star <= rating"
+        (click)="setRating(star)">
+        &#9733;
+      </button>
+    </div>
+
+    <textarea
+      rows="5"
+      [(ngModel)]="response"
+      placeholder="Write your feedback about provider service..."></textarea>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <div class="actions">
+      <button class="btn-cancel" [routerLink]="['/user/bookings']">Cancel</button>
+      <button class="btn-submit" [disabled]="loading" (click)="submitReview()">
+        {{ loading ? 'Submitting...' : 'Submit Review' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="review-card" *ngIf="!booking && !bookingId && !error">
+    <h2>Select a Booking to Review</h2>
+    <p class="subtitle">Choose one completed booking from your account.</p>
+
+    <div class="booking-list" *ngIf="completedBookings.length > 0; else noReviewJobs">
+      <button class="booking-item" *ngFor="let item of completedBookings" (click)="chooseBooking(item._id)">
+        <span>{{ item.serviceName }}</span>
+        <small>{{ item.createdAt | date:'mediumDate' }}</small>
+      </button>
+    </div>
+
+    <ng-template #noReviewJobs>
+      <p class="subtitle">No completed bookings are pending review.</p>
+      <button class="btn-submit" [routerLink]="['/user/bookings']">Back to Bookings</button>
+    </ng-template>
+  </div>
+
+  <div class="review-card" *ngIf="!booking && (error || bookingId)">
+    <h3>{{ error || 'Unable to load booking details' }}</h3>
+    <button class="btn-submit" [routerLink]="['/user/bookings']">Back to Bookings</button>
+  </div>
+</div>
+

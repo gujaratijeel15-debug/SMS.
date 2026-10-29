@@ -1,0 +1,22 @@
+<div class="auth-page" [class.login-image-tone]="isLoginRoute">
+
+  <!-- LEFT SIDE -->
+  <div class="auth-left">
+    <div class="auth-card">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="auth-right"
+     [style.backgroundImage]="'url(' + image + ')'"
+     style="background-size: cover; background-position: center;">
+
+    <div class="overlay">
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+    </div>
+
+  </div>
+
+</div>

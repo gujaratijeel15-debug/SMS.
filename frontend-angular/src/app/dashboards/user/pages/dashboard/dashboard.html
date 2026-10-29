@@ -1,0 +1,215 @@
+<div class="dashboard-container">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome back, {{ user.name }}</p>
+    </div>
+
+    <div class="profile-box">
+      <div class="avatar">
+        {{ user.name.charAt(0) }}
+      </div>
+      <div>
+        <h4>{{ user.name }}</h4>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-wrapper">
+
+    <!-- Total -->
+    <div class="stat-box">
+      <svg viewBox="0 0 24 24" class="stat-icon">
+        <path d="M3 4h18v16H3z"/>
+      </svg>
+      <div>
+        <h2>{{ counter.total }}</h2>
+        <p>Total Bookings</p>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="stat-box">
+      <svg viewBox="0 0 24 24" class="stat-icon">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4l3 3"/>
+      </svg>
+      <div>
+        <h2>{{ counter.pending }}</h2>
+        <p>Pending</p>
+      </div>
+    </div>
+
+    <!-- Active/Accepted -->
+    <div class="stat-box">
+      <svg viewBox="0 0 24 24" class="stat-icon">
+        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/>
+      </svg>
+      <div>
+        <h2>{{ counter.accepted }}</h2>
+        <p>Active</p>
+      </div>
+    </div>
+
+    <!-- Completed -->
+    <div class="stat-box">
+      <svg viewBox="0 0 24 24" class="stat-icon">
+        <path d="M5 13l4 4L19 7"/>
+      </svg>
+      <div>
+        <h2>{{ counter.completed }}</h2>
+        <p>Completed</p>
+      </div>
+    </div>
+
+    <!-- Cancelled -->
+    <div class="stat-box">
+      <svg viewBox="0 0 24 24" class="stat-icon">
+        <path d="M6 6l12 12M6 18L18 6"/>
+      </svg>
+      <div>
+        <h2>{{ counter.cancelled }}</h2>
+        <p>Cancelled</p>
+      </div>
+    </div>
+
+  
+
+  </div>
+
+  <!-- ANALYTICS -->
+  <section class="analytics-section">
+    <div class="trend-card">
+      <div class="card-header">
+        <div>
+          <h3>Booking Trends</h3>
+          <p>Monthly activity overview</p>
+        </div>
+      </div>
+      <div class="trend-canvas-wrap">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <aside class="insights-card">
+      <h3>Graph Details</h3>
+      <p class="insight-subtitle">Current booking status distribution</p>
+
+      <div class="status-chart-wrap">
+        <canvas id="statusChart"></canvas>
+      </div>
+
+      <div class="insight-item">
+        <div class="insight-row">
+          <span>Pending</span>
+          <strong>{{ counter.pending }}</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill pending-fill" [style.width.%]="getStatusShare(counter.pending)"></div>
+        </div>
+      </div>
+
+      <div class="insight-item">
+        <div class="insight-row">
+          <span>Active</span>
+          <strong>{{ counter.accepted }}</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill active-fill" [style.width.%]="getStatusShare(counter.accepted)"></div>
+        </div>
+      </div>
+
+      <div class="insight-item">
+        <div class="insight-row">
+          <span>Completed</span>
+          <strong>{{ counter.completed }}</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill completed-fill" [style.width.%]="getStatusShare(counter.completed)"></div>
+        </div>
+      </div>
+
+      <div class="insight-item">
+        <div class="insight-row">
+          <span>Cancelled</span>
+          <strong>{{ counter.cancelled }}</strong>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill cancelled-fill" [style.width.%]="getStatusShare(counter.cancelled)"></div>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <small>Total</small>
+          <h4>{{ counter.total }}</h4>
+        </div>
+        <div class="summary-box">
+          <small>Completion Rate</small>
+          <h4>{{ getStatusShare(counter.completed) }}%</h4>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- MAIN GRID -->
+  <div class="dashboard-grid">
+
+    <!-- RECENT BOOKINGS -->
+    <div class="recent-card">
+      <div class="card-header">
+        <h3>Recent Bookings</h3>
+        <a routerLink="/user/bookings">View All</a>
+      </div>
+
+      <div class="booking-row"
+           *ngFor="let item of recentBookings">
+
+        <div class="booking-info">
+          <h4>{{ item.serviceName || item.service }}</h4>
+          <p>{{ item.createdAt | date:'MMM d, y' }}</p>
+        </div>
+
+        <span class="status"
+              [ngClass]="'status-' + item.status?.toLowerCase()">
+          {{ item.status }}
+        </span>
+
+      </div>
+
+      <div *ngIf="recentBookings.length === 0"
+           class="empty-state">
+        No recent bookings
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="actions-card">
+
+      <div class="action-item"
+           routerLink="/user/book">
+        <h4>Book New Service</h4>
+        <p>Create a new booking</p>
+      </div>
+
+      <div class="action-item"
+           routerLink="/user/bookings">
+        <h4>Manage Bookings</h4>
+        <p>Track and manage requests</p>
+      </div>
+
+      <div class="action-item"
+           routerLink="/user/profile">
+        <h4>Profile</h4>
+        <p>Update account details</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

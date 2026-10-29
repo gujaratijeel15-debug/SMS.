@@ -1,0 +1,111 @@
+<div class="users-page">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">User Administration</p>
+      <h1>Manage Users</h1>
+      <p class="subtitle">Review registered users, verification state, and account activity from one place.</p>
+    </div>
+
+    <label class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm10 3-4.2-4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search by name, email, city" />
+      <button
+        type="button"
+        class="clear-btn"
+        *ngIf="search.trim()"
+        (click)="clearSearch()">
+        Clear
+      </button>
+    </label>
+  </header>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <small>Total Users</small>
+      <strong>{{ totalUsersCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Verified Users</small>
+      <strong>{{ verifiedUsersCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Not Verified</small>
+      <strong>{{ unverifiedUsersCount }}</strong>
+    </article>
+  </section>
+
+  <section class="table-panel" *ngIf="filteredUsers.length > 0; else emptyState">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>City</th>
+            <th>Verified</th>
+            <th>Joined</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers; trackBy: trackByUserId">
+            <td>
+              <div class="user-cell">
+                <div class="avatar">
+                  <ng-container *ngIf="getAvatarSrc(user) as avatarSrc; else initialsAvatar">
+                    <img
+                      [src]="avatarSrc"
+                      [alt]="(user.name || 'User') + ' profile image'"
+                      (error)="onAvatarError(user._id)" />
+                  </ng-container>
+                  <ng-template #initialsAvatar>{{ getInitials(user.name) }}</ng-template>
+                </div>
+                <div>
+                  <p class="name">{{ user.name || 'N/A' }}</p>
+                  <p class="email">{{ user.email || 'N/A' }}</p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="city">{{ user.city || 'N/A' }}</span>
+            </td>
+            <td>
+              <span class="pill" [class.ok]="user.isVerified" [class.warn]="!user.isVerified">
+                {{ user.isVerified ? 'Verified' : 'Pending' }}
+              </span>
+            </td>
+            <td>
+              <span class="joined">{{ user.createdAt | date:'mediumDate' }}</span>
+            </td>
+            <td>
+              <button
+                class="delete-btn"
+                [disabled]="isDeleting(user._id)"
+                (click)="deleteUser(user)">
+                {{ isDeleting(user._id) ? 'Deleting...' : 'Delete User' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <ng-template #emptyState>
+    <section class="empty-state">
+      <p class="empty-title">No users found</p>
+      <p class="empty-text">Try another search term or clear filters to view all users.</p>
+      <button
+        type="button"
+        class="clear-btn"
+        *ngIf="search.trim()"
+        (click)="clearSearch()">
+        Clear Search
+      </button>
+    </section>
+  </ng-template>
+</div>

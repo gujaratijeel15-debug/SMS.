@@ -1,0 +1,94 @@
+<div class="active-jobs-board">
+  <section class="board-hero">
+    <div class="hero-main">
+      <p class="kicker">Provider Control Room</p>
+      <h1>Active Jobs</h1>
+      <p class="hero-copy">Manage ongoing services with a cleaner flow for payment checks and completion readiness.</p>
+    </div>
+
+    <div class="hero-metrics" *ngIf="jobs.length > 0">
+      <div class="metric-card">
+        <span>Live Jobs</span>
+        <strong>{{ jobs.length }}</strong>
+      </div>
+      <div class="metric-card">
+        <span>Payment Cleared</span>
+        <strong>{{ paidJobsCount }}</strong>
+      </div>
+      <div class="metric-card">
+        <span>Pending Payment</span>
+        <strong>{{ pendingPaymentCount }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section *ngIf="jobs.length === 0" class="zero-state">
+    <h2>No active jobs at the moment</h2>
+    <p>Accepted jobs will show up here with payment and completion controls.</p>
+  </section>
+
+  <section *ngIf="jobs.length > 0" class="jobs-stack">
+    <article class="job-strip" *ngFor="let job of jobs">
+      <div class="strip-glow"></div>
+
+      <div class="job-primary">
+        <div class="job-title-row">
+          <h3>{{ job.serviceName }}</h3>
+          <span class="chip" [ngClass]="{
+            'chip-live': job.status === 'in-progress',
+            'chip-done': job.status === 'completed'
+          }">{{ job.status }}</span>
+        </div>
+
+        <p class="started-at">Started {{ job.createdAt | date:'medium' }}</p>
+
+        <div class="meta-grid">
+          <div class="meta-block">
+            <span>Customer</span>
+            <p>{{ getCustomerName(job) }}</p>
+          </div>
+          <div class="meta-block">
+            <span>Location</span>
+            <p>{{ job.address || 'N/A' }}</p>
+          </div>
+          <div class="meta-block">
+            <span>Payment Method</span>
+            <p>{{ job.paymentMethod || 'Not selected' }}</p>
+          </div>
+          <div class="meta-block">
+            <span>Payment Status</span>
+            <p>{{ job.paymentStatus }}</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="job-intel">
+        <h4>Payment Intelligence</h4>
+
+        <div class="intel-messages" *ngIf="job.paymentStatus !== 'paid' || !job.paymentMethod">
+          <p class="intel-note" *ngIf="!job.paymentMethod">Payment method not selected by user.</p>
+          <p class="intel-note" *ngIf="job.paymentMethod === 'online' && job.paymentStatus !== 'paid'">Waiting for online payment confirmation.</p>
+          <p class="intel-alert" *ngIf="job.paymentStatus !== 'paid'">Payment is required before completion.</p>
+        </div>
+
+        <p class="intel-clear" *ngIf="job.paymentStatus === 'paid'">Payment verified. Job is ready to complete.</p>
+
+        <div class="actions-row">
+          <button
+            class="btn-complete"
+            [disabled]="job.paymentStatus !== 'paid'"
+            (click)="completeJob(job)">
+            Complete Job
+          </button>
+
+          <button
+            class="btn-cash"
+            *ngIf="job.paymentMethod === 'cash' && job.paymentStatus === 'unpaid'"
+            (click)="markPaid(job._id)">
+            Received Cash
+                    </button>
+        </div>
+      </aside>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,210 @@
+/* ================= GLOBAL ================= */
+
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: Inter, sans-serif;
+  background: #020617; /* full page dark */
+}
+
+/* ================= LEFT SIDE ================= */
+
+.auth-left {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  /* 🔥 DARK GREEN BACKGROUND */
+  background:
+    radial-gradient(circle at 20% 20%, rgba(34,197,94,0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(34,197,94,0.08), transparent 40%),
+    linear-gradient(135deg, #020617 0%, #0f172a 100%);
+}
+
+/* subtle glow overlay */
+.auth-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(34,197,94,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+/* ================= CARD ================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 40px 30px;
+
+  /* glass dark card */
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  position: relative;
+  z-index: 2;
+}
+
+/* ================= TEXT ================= */
+
+.brand {
+  font-weight: 800;
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #22c55e;
+}
+
+h3 {
+  margin: 0;
+  color: white;
+}
+
+.sub-text {
+  color: #b0a99f;
+  margin-bottom: 20px;
+}
+
+/* ================= INPUT ================= */
+
+
+.logo {
+   font-size: 32px;
+  font-weight: 800;
+  color: white;
+  display: flex;
+align-items: baseline; 
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+
+.form-control {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+}
+
+.form-control::placeholder {
+  color: #64748b;
+}
+
+.form-control:focus {
+  border-color: #22c55e;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(34,197,94,0.2);
+}
+
+/* ================= BUTTON ================= */
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: #22c55e;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #16a34a;
+}
+
+/* ================= LINKS ================= */
+
+.switch {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #b0a99f;
+}
+
+.switch a {
+  color: #22c55e;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ================= ERROR ================= */
+
+.error {
+  color: #ef4444;
+  margin-top: 10px;
+}
+
+/* ================= RIGHT IMAGE PANEL ================= */
+
+.auth-right {
+  width: 50%;
+  position: relative;
+
+  /* Angular dynamic image */
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overlay h1 {
+  font-size: 48px;
+}
+
+.overlay span {
+  color: #22c55e;
+}
+
+/* Login page only: darken right image panel with black + green tone */
+.auth-page.login-image-tone .overlay {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(2, 6, 23, 0.45) 0%,
+      rgba(2, 6, 23, 0.35) 60%,
+      rgba(15, 23, 42, 0.32) 100%
+    );
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-right {
+    display: none;
+  }
+
+  .auth-left {
+    width: 100%;
+  }
+}
+

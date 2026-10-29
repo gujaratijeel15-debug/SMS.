@@ -1,0 +1,41 @@
+<footer class="footer">
+  <div class="fx fx-one" aria-hidden="true"></div>
+  <div class="fx fx-two" aria-hidden="true"></div>
+
+  <div class="footer-container">
+    <section class="footer-brand panel">
+      <div class="logo-row">
+<div class="logo">
+  SMS<span class="logo-dot"></span>
+</div>        <span class="panel-badge">{{ panel | uppercase }} PANEL</span>
+      </div>
+
+      <p class="footer-desc">{{ description }}</p>
+
+      <div class="newsletter">
+        <input type="email" placeholder="Enter your email for updates">
+        <button class="subscribe-btn" (click)="onSubscribe()">Subscribe</button>
+      </div>
+    </section>
+
+    <section class="footer-links">
+      <article class="link-col panel" *ngFor="let col of columns">
+        <h3>{{ col.title }}</h3>
+        <a class="link-item" *ngFor="let link of col.links" [routerLink]="link.route">
+          {{ link.label }}
+        </a>
+      </article>
+    </section>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 SMS - Crafted for smooth service workflows.</p>
+
+    <div class="social-icons">
+      <a class="social-btn" href="#">Facebook</a>
+      <a class="social-btn" href="#">Twitter</a>
+      <a class="social-btn" href="#">Instagram</a>
+      <a class="social-btn" href="#">WhatsApp</a>
+    </div>
+  </div>
+</footer>

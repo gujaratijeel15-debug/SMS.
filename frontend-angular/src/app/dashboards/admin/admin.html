@@ -1,0 +1,53 @@
+<div class="container mt-4">
+
+  <h2 class="mb-3">Admin Dashboard</h2>
+
+  <div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+      Provider Approval Panel
+    </div>
+
+    <table class="table mb-0">
+
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of providers">
+
+          <td>{{ p.name }}</td>
+          <td>{{ p.email }}</td>
+
+          <td>
+            <span class="badge bg-warning" *ngIf="p.status === 'pending'">Pending</span>
+            <span class="badge bg-success" *ngIf="p.status === 'approved'">Approved</span>
+          </td>
+
+          <td>
+            <button *ngIf="p.status === 'pending'"
+                    class="btn btn-sm btn-primary"
+                    (click)="approve(p._id)">
+              Approve
+            </button>
+
+            <span *ngIf="p.status !== 'pending'"
+                  class="text-muted">
+              Completed
+            </span>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

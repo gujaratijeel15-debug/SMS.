@@ -1,0 +1,98 @@
+<div class="messages-page">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Support Desk</p>
+      <h1>Contact Messages</h1>
+      <p class="subtitle">Handle user inquiries, send replies, and track message resolution status from one inbox.</p>
+    </div>
+    <div class="filter-chip">{{ filterLabel }}</div>
+  </header>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <small>Total Loaded</small>
+      <strong>{{ totalMessagesCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Open</small>
+      <strong>{{ openMessagesCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Resolved</small>
+      <strong>{{ resolvedMessagesCount }}</strong>
+    </article>
+  </section>
+
+  <section class="filters">
+    <button [class.active]="statusFilter === ''" (click)="setFilter('')">All</button>
+    <button [class.active]="statusFilter === 'open'" (click)="setFilter('open')">Open</button>
+    <button [class.active]="statusFilter === 'resolved'" (click)="setFilter('resolved')">Resolved</button>
+  </section>
+
+  <section class="cards" *ngIf="messages.length > 0; else emptyState">
+    <article class="msg-card" *ngFor="let msg of messages; trackBy: trackByMessage">
+      <div class="top">
+        <div class="identity">
+          <div class="avatar">{{ getInitials(msg.name) }}</div>
+          <div>
+            <h3>{{ msg.name || 'Anonymous' }}</h3>
+            <p class="email">{{ msg.email || 'No email' }}</p>
+          </div>
+        </div>
+        <span class="pill" [class.open]="msg.status !== 'resolved'" [class.resolved]="msg.status === 'resolved'">
+          {{ msg.status === 'resolved' ? 'Resolved' : 'Open' }}
+        </span>
+      </div>
+
+      <p class="message">{{ msg.message || 'No message body' }}</p>
+      <p class="time">{{ msg.createdAt | date:'medium' }}</p>
+
+      <div class="reply-box" *ngIf="msg.email">
+        <label for="reply-{{ msg._id }}">Reply Message</label>
+        <textarea
+          id="reply-{{ msg._id }}"
+          [(ngModel)]="replyDraftMap[msg._id]"
+          rows="4"
+          placeholder="Type reply to send on this email"></textarea>
+        <button
+          class="send-btn"
+          [disabled]="isBusy(msg._id)"
+          (click)="sendReply(msg._id)">
+          {{ isBusy(msg._id) ? 'Sending...' : 'Send Email Reply' }}
+        </button>
+        <p class="feedback" *ngIf="feedbackMap[msg._id]">{{ feedbackMap[msg._id] }}</p>
+      </div>
+
+      <div class="history" *ngIf="msg.adminReply">
+        <p class="history-title">Last Reply</p>
+        <p class="history-body">{{ msg.adminReply }}</p>
+        <p class="history-time" *ngIf="msg.repliedAt">{{ msg.repliedAt | date:'medium' }}</p>
+      </div>
+
+      <div class="actions">
+        <button
+          class="resolve-btn"
+          [disabled]="isBusy(msg._id)"
+          (click)="markResolved(msg)"
+          *ngIf="msg.status !== 'resolved'">
+          {{ isBusy(msg._id) ? 'Saving...' : 'Mark Resolved' }}
+        </button>
+
+        <button
+          class="reopen-btn"
+          [disabled]="isBusy(msg._id)"
+          (click)="setStatus(msg._id, 'open')"
+          *ngIf="msg.status === 'resolved'">
+          {{ isBusy(msg._id) ? 'Saving...' : 'Reopen' }}
+        </button>
+      </div>
+    </article>
+  </section>
+
+  <ng-template #emptyState>
+    <section class="empty-state">
+      <p class="empty-title">No messages found</p>
+      <p class="empty-text">No contact messages match the current filter.</p>
+    </section>
+  </ng-template>
+</div>

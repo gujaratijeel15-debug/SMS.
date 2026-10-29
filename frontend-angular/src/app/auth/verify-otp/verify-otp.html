@@ -1,0 +1,28 @@
+
+
+<div class="logo">
+  SMS <span class="dot"></span>
+</div>
+<br/>      <h3>Verify OTP</h3>
+      <p class="sub-text">Enter the OTP sent to your email</p>
+
+      <input
+        class="form-control"
+        placeholder="Email"
+        [(ngModel)]="email"
+      />
+
+      <input
+        class="form-control"
+        placeholder="OTP"
+        [(ngModel)]="otp"
+      />
+
+      <button class="btn-primary" (click)="verify()">
+        {{ loading ? 'Verifying...' : 'Verify OTP' }}
+      </button>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+
+

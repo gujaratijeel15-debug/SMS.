@@ -1,0 +1,73 @@
+<div class="booking-container">
+  <h2>Choose Your Service</h2>
+
+  <div class="service-grid">
+    <div
+      *ngFor="let service of services"
+      class="service-card"
+      [class.inactive]="isServiceInactive(service)"
+      [class.selected]="selectedService?.name === service.name"
+      (click)="selectService(service)">
+      <div class="image-box">
+        <img [src]="service.image" alt="service">
+      </div>
+
+      <h3>{{ service.name }}</h3>
+      <p class="price">INR {{ service.price }}</p>
+      <p class="inactive-note" *ngIf="isServiceInactive(service)">
+        Service deactivated by admin: {{ getServiceDeactivationReason(service) }}
+      </p>
+
+      <div class="checkmark" *ngIf="selectedService?.name === service.name">
+        OK
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedService" class="providers-section">
+    <h3>Choose Provider</h3>
+
+    <p *ngIf="loadingProviders" class="muted-text">Loading providers...</p>
+    <p *ngIf="!loadingProviders && providers.length === 0" class="muted-text">
+      {{ providerMessage || 'Provider not available in your area!' }}
+    </p>
+
+    <div class="provider-list" *ngIf="!loadingProviders && providers.length > 0">
+      <div
+        class="provider-card"
+        *ngFor="let provider of providers"
+        [class.selected]="selectedProvider?._id === provider._id"
+        (click)="selectProvider(provider)">
+        <img [src]="provider.avatar || 'assets/provider/avatar.jpg'" class="avatar" alt="provider">
+        <div>
+          <h4>{{ provider.name }}</h4>
+          <p>{{ provider.providerService }}</p>
+          <p class="provider-rating">
+            <span class="rating-star" [ngClass]="getRatingTone(provider.averageRating)" [style.--fill]="getRatingFill(provider.averageRating)" aria-hidden="true">&#9733;</span>
+            {{ provider.averageRating > 0 ? (provider.averageRating | number:'1.1-1') : 'New' }}
+            <span *ngIf="provider.averageRating > 0">/ 5</span>
+            <span class="reviews">({{ provider.ratingCount || 0 }} reviews)</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="book-btn"
+    [disabled]="!selectedService || !selectedProvider || isLoading"
+    (click)="confirmBooking()">
+    <span *ngIf="!isLoading">Confirm Booking</span>
+    <span *ngIf="isLoading" class="loader"></span>
+  </button>
+
+  <div class="success-screen" *ngIf="successMessage">
+    <div class="success-icon">OK</div>
+    <h3>Booking Sent Successfully!</h3>
+    <p>{{ successMessage }}</p>
+  </div>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>
+
+

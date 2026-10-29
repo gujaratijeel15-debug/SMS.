@@ -1,0 +1,13 @@
+<div class="earnings-container">
+
+  <h2>Total Earnings: &#8377; {{ total }}</h2>
+
+  <div *ngFor="let job of jobs" class="earn-card">
+
+    <h3>{{ job.userId?.name || 'Customer' }}</h3>
+    <p>Address: {{ job.address }}</p>
+    <p class="price">&#8377; {{ job.price }}</p>
+
+  </div>
+
+</div>

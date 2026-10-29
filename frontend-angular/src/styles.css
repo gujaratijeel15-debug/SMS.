@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* =====================================================
+GLOBAL RESET
+===================================================== */
+
+*,
+*::before,
+*::after {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+/* =====================================================
+GLOBAL COLOR SYSTEM — BLACK + GREEN + WHITE THEME
+===================================================== */
+
+:root {
+
+/* BACKGROUNDS */
+--bg-main: #020617;
+--bg-card: #0F172A;
+--bg-surface: #111827;
+
+/* PRIMARY COLORS */
+--primary: #22C55E;
+--primary-hover: #16A34A;
+--primary-light: #4ADE80;
+
+/* TEXT */
+--text-main: #FFFFFF;
+--text-muted: #b0a99f;
+--info-text: #b0a99f;
+
+/* BORDER */
+--border-color: #1E293B;
+
+/* STATUS COLORS */
+--success: #22C55E;
+--warning: #FACC15;
+--danger: #EF4444;
+
+/* GLASS EFFECT */
+--glass-bg: rgba(255,255,255,0.03);
+--glass-border: rgba(255,255,255,0.08);
+--glass-blur: 18px;
+
+/* FONT */
+--font-main: 'Outfit', sans-serif;
+}
+
+/* =====================================================
+BODY
+===================================================== */
+
+html,
+body {
+height: 100%;
+}
+
+body {
+background: var(--bg-main);
+color: var(--text-main);
+font-family: var(--font-main);
+-webkit-font-smoothing: antialiased;
+}
+
+/* subtle dark gradient background */
+body::before {
+content: "";
+position: fixed;
+inset: 0;
+background:
+radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.08), transparent 50%),
+radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.06), transparent 50%);
+z-index: -1;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #000;
+}
+
+/* =====================================================
+GLOBAL TRANSITION
+===================================================== */
+
+* {
+  transition: background-color .2s ease,
+  border-color .2s ease,
+  color .2s ease,
+  box-shadow .2s ease,
+  transform .2s ease;
+  }
+
+/* =====================================================
+TYPOGRAPHY
+===================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+font-weight: 700;
+letter-spacing: -0.02em;
+}
+
+p {
+color: var(--info-text);
+line-height: 1.6;
+}
+
+/* Keep headers/labels separate from information text */
+h1, h2, h3, h4, h5, h6, th, label, strong, b {
+color: var(--text-main);
+}
+
+/* Information text color across the site */
+span,
+small,
+li,
+td,
+.sub-text,
+.switch,
+.info-text {
+color: var(--info-text);
+}
+
+/* All links across pages */
+a,
+a:visited,
+a:hover,
+a:active {
+color: var(--info-text);
+}
+
+/* =====================================================
+BUTTONS
+===================================================== */
+
+button,
+.btn-primary {
+background: var(--primary);
+color: white;
+border: none;
+border-radius: 10px;
+padding: 12px 24px;
+font-weight: 600;
+cursor: pointer;
+}
+
+/* Keep button text/icons from inheriting global info text color */
+button *,
+.btn-primary *,
+.send-btn * {
+color: inherit !important;
+}
+
+button:hover,
+.btn-primary:hover {
+background: var(--primary-hover);
+transform: translateY(-2px);
+}
+
+button:disabled {
+opacity: .6;
+cursor: not-allowed;
+}
+
+/* secondary button */
+
+.btn-outline {
+background: transparent;
+border: 1px solid var(--info-text);
+color: var(--info-text);
+}
+
+.btn-outline:hover {
+background: rgba(176,169,159,0.12);
+color: var(--info-text);
+}
+
+/* =====================================================
+INPUTS & FORMS
+===================================================== */
+
+input,
+textarea,
+select {
+width: 100%;
+background: #020617;
+border: 1px solid var(--border-color);
+color: var(--text-main);
+padding: 12px;
+border-radius: 10px;
+outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+color: var(--info-text) !important;
+}
+
+select::placeholder {
+color: var(--info-text) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+}
+
+/* =====================================================
+CARD COMPONENT
+===================================================== */
+
+.card {
+background: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 14px;
+padding: 24px;
+}
+
+/* =====================================================
+GLASSMORPHISM (OPTIONAL)
+===================================================== */
+
+.glass {
+background: var(--glass-bg);
+backdrop-filter: blur(var(--glass-blur));
+border: 1px solid var(--glass-border);
+border-radius: 16px;
+}
+
+/* =====================================================
+LAYOUT UTILITIES
+===================================================== */
+
+.container {
+max-width: 1400px;
+margin: auto;
+padding: 30px;
+}
+
+.flex {
+display: flex;
+}
+
+.center {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+/* =====================================================
+DASHBOARD LAYOUT
+===================================================== */
+
+.user-container {
+display: flex;
+min-height: 100vh;
+}
+
+
+
+/* =====================================================
+ANIMATIONS
+===================================================== */
+
+@keyframes fadeUp {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.fade-in {
+animation: fadeUp .5s ease forwards;
+}
+
+/* =====================================================
+SCROLLBAR (MODERN LOOK)
+===================================================== */
+
+::-webkit-scrollbar {
+width: 8px;
+}
+
+::-webkit-scrollbar-track {
+background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+background: var(--primary);
+border-radius: 10px;
+}
+body {
+  background: #000;
+}
+
+
+

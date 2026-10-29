@@ -1,0 +1,21 @@
+button {
+  padding: 10px 22px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: 0.25s ease;
+}
+
+button.approve {
+  background: #fff;
+  color: #000;
+}
+
+button.reject {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+button:hover { opacity: .85; }

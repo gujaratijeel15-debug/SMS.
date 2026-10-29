@@ -1,0 +1,102 @@
+<div class="reviews-page">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Quality Monitoring</p>
+      <h1>Provider Ratings & Reviews</h1>
+      <p class="subtitle">Track customer sentiment, identify service quality issues, and review provider feedback trends.</p>
+    </div>
+  </header>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <small>Total Reviews</small>
+      <strong>{{ totalReviewsCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Average Rating</small>
+      <strong>{{ averageRating }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>High Ratings (4-5)</small>
+      <strong>{{ highRatingCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <small>Low Ratings (1-2)</small>
+      <strong>{{ lowRatingCount }}</strong>
+    </article>
+  </section>
+
+  <section class="filter-row">
+    <button
+      type="button"
+      class="filter-btn"
+      [class.active]="selectedRating === 'all'"
+      (click)="setRatingFilter('all')">
+      All
+    </button>
+    <button
+      type="button"
+      class="filter-btn"
+      [class.active]="selectedRating === 'high'"
+      (click)="setRatingFilter('high')">
+      High (4-5)
+    </button>
+    <button
+      type="button"
+      class="filter-btn"
+      [class.active]="selectedRating === 'mid'"
+      (click)="setRatingFilter('mid')">
+      Medium (3)
+    </button>
+    <button
+      type="button"
+      class="filter-btn"
+      [class.active]="selectedRating === 'low'"
+      (click)="setRatingFilter('low')">
+      Low (1-2)
+    </button>
+  </section>
+
+  <section class="cards" *ngIf="filteredReviews.length > 0; else emptyState">
+    <article class="review-card" *ngFor="let item of filteredReviews; trackBy: trackByReview">
+      <div class="row">
+        <div>
+          <h3>{{ item.serviceName || 'Service' }}</h3>
+          <p class="time">{{ (item.review?.createdAt ? item.review?.createdAt : item.createdAt) | date:'medium' }}</p>
+        </div>
+        <div class="rating-block">
+          <strong class="stars">{{ getStars(item.review?.rating) }}</strong>
+          <span class="rating-value">{{ getRatingValue(item.review?.rating) }}/5</span>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="identity">
+          <div class="avatar">{{ getInitials(item.providerId?.name) }}</div>
+          <div>
+            <p class="label">Provider</p>
+            <p class="value">{{ item.providerId?.name || 'N/A' }}</p>
+            <p class="sub">{{ item.providerId?.providerService || 'Service N/A' }}</p>
+          </div>
+        </div>
+
+        <div class="identity">
+          <div class="avatar user">{{ getInitials(item.userId?.name) }}</div>
+          <div>
+            <p class="label">User</p>
+            <p class="value">{{ item.userId?.name || 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="comment">{{ item.review?.response || 'No review text' }}</p>
+    </article>
+  </section>
+
+  <ng-template #emptyState>
+    <section class="empty-state">
+      <p class="empty-title">No reviews found</p>
+      <p class="empty-text">No provider reviews have been submitted yet for this filter.</p>
+    </section>
+  </ng-template>
+</div>

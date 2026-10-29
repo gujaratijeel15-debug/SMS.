@@ -1,0 +1,45 @@
+<div class="logo">
+  SMS <span class="dot"></span>
+</div>
+<br/>
+<h3>Welcome back</h3>
+<p class="sub-text">Sign in to manage your services</p>
+
+<!-- EMAIL -->
+<input
+  class="form-control"
+  placeholder="Email address"
+  [(ngModel)]="email"
+/>
+
+<!-- PASSWORD -->
+<input
+  class="form-control"
+  type="password"
+  placeholder="Password"
+  [(ngModel)]="password"
+/>
+
+<!-- FORGOT PASSWORD LINK -->
+<div style="text-align: right; margin-top: -8px; margin-bottom: 18px;">
+  <a
+    (click)="goForgotPassword()"
+    style="color: #16a34a; cursor: pointer; font-size: 14px; text-decoration: none;"
+  >
+    Forgot password?
+  </a>
+</div>
+
+<!-- LOGIN BUTTON -->
+<button type="button" class="btn-primary" (click)="login()">
+  Continue
+</button>
+
+<!-- REGISTER LINK -->
+<p class="switch">
+  Don’t have an account?
+  <a (click)="goRegister()">Create one</a>
+</p>
+
+<!-- ERROR -->
+<p class="error" *ngIf="error">{{ error }}</p>

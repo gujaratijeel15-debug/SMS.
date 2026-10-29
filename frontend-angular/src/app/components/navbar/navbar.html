@@ -1,0 +1,257 @@
+<nav class="navbar">
+      
+  <!-- Brand -->
+  <div class="nav-brand" (click)="navigate('/')">
+    <span class="logo-text">SMS<span class="dot">.</span></span>
+  </div>
+
+  <div class="nav-links">
+
+    <!-- ✅ HOME (public + user + provider) -->
+   <a [routerLink]="homeRoute"routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }"
+       class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9.5L12 3l9 6.5"></path>
+        <path d="M5 10v10h14V10"></path>
+      </svg>
+      <span>Home</span>
+    </a>
+
+    <!-- ⭐ SERVICE -->
+    <!-- USER -->
+    <a *ngIf="isLoggedIn && role === 'user'"
+       routerLink="/user/book"
+       routerLinkActive="active"
+       class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a4 4 0 0 0-5.6 5.6L3 18l3 3 6.1-6.1a4 4 0 0 0 5.6-5.6l-3 3z"/>
+      </svg>
+      <span>Service</span>
+    </a>
+
+    <!-- 🔧 PROVIDER REQUESTS -->
+    <a *ngIf="isLoggedIn && role === 'provider'"
+       routerLink="/provider/requests"
+       routerLinkActive="active"
+       class="nav-item">
+       <svg viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- inbox box -->
+  <path d="M3 12l3-6h12l3 6v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6z"/>
+
+  <!-- received line -->
+  <path d="M3 12h6l2 3h2l2-3h6"/>
+
+</svg>
+  <!-- 🔴 notification badge -->
+  <span *ngIf="notificationCount > 0" class="notification-badge">
+    {{ notificationCount }}
+  </span>
+      <span>Requests</span>
+    </a>
+
+    <!-- 🔧 PROVIDER JOBS -->
+    <a *ngIf="isLoggedIn && role === 'provider'"
+       routerLink="/provider/active-jobs"
+       routerLinkActive="active"
+       class="nav-item">
+       <svg viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- briefcase -->
+  <rect x="2" y="7" width="20" height="14" rx="2"/>
+  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+  <path d="M2 12h20"/>
+
+</svg>
+
+      <span>Active Jobs</span>
+    </a>
+
+
+    <!-- 🔧 PROVIDER DASHBOARD -->
+    <a *ngIf="isLoggedIn && role === 'provider'"
+       routerLink="/provider/dashboard"
+       routerLinkActive="active"
+       class="nav-item">
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+
+
+    <a *ngIf="isLoggedIn && role === 'provider'"
+   routerLink="/provider/history"
+   routerLinkActive="active"
+   class="nav-item">
+   <svg viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- clock circle -->
+  <path d="M3 12a9 9 0 1 0 3-6.7"/>
+
+  <!-- clock hand -->
+  <path d="M12 7v5l3 2"/>
+
+  <!-- history arrow -->
+  <path d="M3 3v5h5"/>
+
+</svg>
+  <span>History</span>
+</a>
+
+    <!-- 🔧 PROVIDER EARNINGS -->
+    <a *ngIf="isLoggedIn && role === 'provider'"
+       routerLink="/provider/earnings"
+       routerLinkActive="active"
+       class="nav-item">
+       <svg viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- wallet -->
+  <path d="M3 7h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>
+  <path d="M3 7l2-3h14l2 3"/>
+  
+  <!-- money indicator -->
+  <circle cx="16" cy="12" r="1.5"/>
+
+</svg>
+      <span>Earnings</span>
+    </a>
+
+    <!-- 🔐 USER ONLY -->
+    <a *ngIf="isLoggedIn && role === 'user'"
+       routerLink="/user/bookings"
+       routerLinkActive="active"
+       class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <span>My Bookings</span>
+    </a>
+
+    <a *ngIf="isLoggedIn && role === 'user'"
+       routerLink="/user/dashboard"
+       routerLinkActive="active"
+       class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+
+    <!-- PUBLIC PAGES (all roles) -->
+    <a [routerLink]="aboutRoute" routerLinkActive="active" class="nav-item">
+      <svg class="about-icon" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8">
+        <path d="M20 14a4 4 0 0 1-4 4H7l-4 3V6a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4z"/>
+        <circle cx="12" cy="9" r="2"/>
+        <path d="M9 15c0-1.5 6-1.5 6 0"/>
+      </svg>
+      <span>About</span>
+    </a>
+
+    <a routerLink="/contact" routerLinkActive="active" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      <span>Contact</span>
+    </a>
+
+    <a [routerLink]="helpRoute" routerLinkActive="active" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 16v-4"></path>
+        <path d="M12 8h.01"></path>
+      </svg>
+      <span>Help</span>
+    </a>
+
+  </div>
+
+  <!-- PROFILE -->
+  <div class="nav-right" *ngIf="isLoggedIn">
+    
+    <div class="profile-trigger" (click)="toggleMenu()" [class.active]="menuOpen">
+      <div class="avatar-circle">
+        <img [src]="user.avatar || defaultAvatar" alt="User">
+      </div>
+      <span class="user-name">{{ user.name || 'Account' }}</span>
+      <svg class="chevron" [class.rotate]="menuOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+
+    <div class="dropdown-menu" *ngIf="menuOpen">
+
+      <div class="menu-header">
+        <img [src]="user.avatar || defaultAvatar" class="menu-avatar">
+        <div class="menu-info">
+          <strong>{{ user.name }}</strong>
+          <span>{{ user.email }}</span>
+          <small class="menu-meta">{{ role | titlecase }}</small>
+          <small class="menu-meta" *ngIf="role === 'provider'">
+            {{ user.providerService || 'Service not set' }}
+          </small>
+        </div>
+      </div>
+
+      <div class="menu-body">
+
+        <!-- user profile -->
+        <div *ngIf="role === 'user'"
+             class="menu-item"
+             (click)="navigate('/user/profile')">
+          Profile Settings
+        </div>
+
+        <!-- provider profile -->
+        <div *ngIf="role === 'provider'"
+             class="menu-item"
+             (click)="navigate('/provider/profile')">
+          Profile Settings
+        </div>
+
+      </div>
+
+      <div class="menu-footer">
+        <div class="menu-item logout" (click)="logout()">
+          Sign Out
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</nav>
+

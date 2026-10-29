@@ -1,0 +1,165 @@
+<!-- HERO SECTION -->
+<section class="hero">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      SMS <span class="dot"></span>
+    </div>
+
+    <div class="nav-links">
+
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/auth/login">Login</a>
+        <a routerLink="/auth/register" class="btn-nav">Get Started</a>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/provider/dashboard">Dashboard</a>
+        <a routerLink="/provider/requests" class="btn-nav">View Requests</a>
+        <a (click)="logout()">Logout</a>
+      </ng-container>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO CONTENT -->
+  <div class="hero-wrapper">
+
+    <div class="hero-content">
+      <h1>
+        Grow Your <span>Service Business</span><br />
+        with Better Job Control
+      </h1>
+
+      <p>
+        Receive nearby requests, accept the right jobs, and track progress,
+        earnings, and customer trust from one provider dashboard.
+      </p>
+
+      <div class="hero-buttons">
+
+        <ng-container *ngIf="!isLoggedIn">
+          <button routerLink="/auth/register" class="btn-primary">
+            Get Started
+          </button>
+
+          <button routerLink="/auth/login" class="btn-outline">
+            Login
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <button routerLink="/provider/requests" class="btn-primary">
+            View Requests
+          </button>
+
+          <button routerLink="/provider/dashboard" class="btn-outline">
+            Go to Dashboard
+          </button>
+        </ng-container>
+
+      </div>
+    </div>
+
+
+    <!-- HERO IMAGE -->
+    <div class="hero-image">
+      <img src="assets/auth/cleaning service-bro.png" alt="service illustration">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SERVICES -->
+<section class="services">
+  <h2>Provider Tools</h2>
+
+  <div class="service-grid">
+
+    <div class="card">
+      <h3>Service Requests</h3>
+      <p>Review incoming bookings and accept jobs that match your skills and schedule.</p>
+    </div>
+
+    <div class="card">
+      <h3>Active Jobs</h3>
+      <p>Manage ongoing tasks, update job status, and complete work on time.</p>
+    </div>
+
+    <div class="card">
+      <h3>Job History</h3>
+      <p>Track completed services and use your history to improve future performance.</p>
+    </div>
+
+    <div class="card">
+      <h3>Earnings</h3>
+      <p>Monitor payouts, revenue trends, and business growth in one place.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FEATURES -->
+<section class="features">
+
+  <h2>Why Providers Choose SMS?</h2>
+
+  <div class="feature-grid">
+
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" class="feature-icon">
+        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
+      </svg>
+      <h3>Fast Workflow</h3>
+      <p>Respond quickly to booking requests and reduce delays in day-to-day operations.</p>
+    </div>
+
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" class="feature-icon">
+        <path d="M12 2l7 4v5c0 5-3.5 9-7 11-3.5-2-7-6-7-11V6l7-4z"/>
+        <path d="M9 12h6"/>
+      </svg>
+      <h3>Secure Platform</h3>
+      <p>Your provider account, customer details, and job records stay protected.</p>
+    </div>
+
+    <div class="feature-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" class="feature-icon">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+        <path d="M16 11l2 2 4-4"/>
+      </svg>
+      <h3>More Trust</h3>
+      <p>Build strong customer trust with timely updates and consistent service quality.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Start Growing as a Provider Today</h2>
+  <p>Join SMS to get verified leads, manage jobs smoothly, and increase your earnings.</p>
+
+  <button *ngIf="!isLoggedIn"
+          routerLink="/auth/register"
+          class="btn-primary">
+    Create Account
+  </button>
+
+  <button *ngIf="isLoggedIn"
+          routerLink="/provider/requests"
+          class="btn-primary">
+    View Service Requests
+  </button>
+</section>

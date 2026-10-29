@@ -1,0 +1,205 @@
+<div class="admin-dashboard">
+  <header class="dashboard-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Control Center</p>
+      <h1>Admin Dashboard</h1>
+      <p class="subtitle">Track platform growth, service quality, and support performance from one command view.</p>
+      <div class="hero-badges">
+        <span class="hero-badge">Pending Providers: {{ stats.pendingProviders }}</span>
+        <span class="hero-badge">Open Messages: {{ stats.openMessages }}</span>
+        <span class="hero-badge">Reviews: {{ stats.reviews }}</span>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <button class="refresh-btn" (click)="loadDashboard()">
+        {{ loading ? 'Refreshing...' : 'Refresh Data' }}
+      </button>
+
+      <div class="signal-card">
+        <small>Platform Signal</small>
+        <strong>{{ reviewCoveragePercent }}%</strong>
+        <span>Review coverage across bookings</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="kpi-grid">
+    <article class="kpi-card">
+      <small>Total Users</small>
+      <strong>{{ stats.users }}</strong>
+      <p>{{ userShare }}% of audience share</p>
+    </article>
+
+    <article class="kpi-card">
+      <small>Total Providers</small>
+      <strong>{{ stats.providers }}</strong>
+      <p>{{ providerApprovalPercent }}% approved</p>
+    </article>
+
+    <article class="kpi-card">
+      <small>Total Bookings</small>
+      <strong>{{ stats.bookings }}</strong>
+      <p>{{ reviewCoveragePercent }}% reviewed</p>
+    </article>
+
+    <article class="kpi-card">
+      <small>Support Queue</small>
+      <strong>{{ stats.openMessages }}</strong>
+      <p>{{ resolvedMessageShare }}% resolved</p>
+    </article>
+  </section>
+
+  <section class="experience-grid">
+    <article class="panel spotlight-panel">
+      <div class="panel-head">
+        <h3>Audience & Support Pulse</h3>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-block">
+          <div class="donut" [ngStyle]="audienceDonutStyle">
+            <div class="donut-center">
+              <span>{{ userShare }}%</span>
+              <small>Users</small>
+            </div>
+          </div>
+          <div class="legend">
+            <p><span class="dot green"></span> Users: {{ stats.users }}</p>
+            <p><span class="dot white"></span> Providers: {{ stats.providers }}</p>
+          </div>
+        </div>
+
+        <div class="ring-block">
+          <div class="donut" [ngStyle]="supportDonutStyle">
+            <div class="donut-center">
+              <span>{{ resolvedMessageShare }}%</span>
+              <small>Resolved</small>
+            </div>
+          </div>
+          <div class="legend">
+            <p><span class="dot green"></span> Resolved: {{ resolvedMessages }}</p>
+            <p><span class="dot gray"></span> Open: {{ stats.openMessages }}</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel health-panel">
+      <div class="panel-head">
+        <h3>Operational Health</h3>
+      </div>
+
+      <div class="health-item">
+        <div class="health-title">
+          <span>Provider Approval Rate</span>
+          <strong>{{ providerApprovalPercent }}%</strong>
+        </div>
+        <div class="meter">
+          <div class="meter-fill" [style.width.%]="providerApprovalPercent"></div>
+        </div>
+      </div>
+
+      <div class="health-item">
+        <div class="health-title">
+          <span>Review Coverage</span>
+          <strong>{{ reviewCoveragePercent }}%</strong>
+        </div>
+        <div class="meter">
+          <div class="meter-fill white" [style.width.%]="reviewCoveragePercent"></div>
+        </div>
+      </div>
+
+      <div class="health-item">
+        <div class="health-title">
+          <span>Support Resolution</span>
+          <strong>{{ resolvedMessageShare }}%</strong>
+        </div>
+        <div class="meter">
+          <div class="meter-fill" [style.width.%]="resolvedMessageShare"></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="analytics-grid">
+    <article class="panel bars-panel">
+      <div class="panel-head">
+        <h3>Volume Comparison</h3>
+      </div>
+
+      <div class="bars">
+        <div class="bar-item" *ngFor="let bar of workloadBars">
+          <div class="bar-shell">
+            <div class="bar-fill" [style.height]="barHeight(bar.value)" [class.white]="bar.tone === 'white'"></div>
+          </div>
+          <strong>{{ bar.value }}</strong>
+          <small>{{ bar.label }}</small>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel quick-panel">
+      <div class="panel-head">
+        <h3>Queue Summary</h3>
+      </div>
+
+      <div class="quick-list">
+        <div class="quick-item">
+          <span>Pending Provider Approvals</span>
+          <strong>{{ stats.pendingProviders }}</strong>
+        </div>
+        <div class="quick-item">
+          <span>Open Support Messages</span>
+          <strong>{{ stats.openMessages }}</strong>
+        </div>
+        <div class="quick-item">
+          <span>Total Messages</span>
+          <strong>{{ stats.messages }}</strong>
+        </div>
+        <div class="quick-item">
+          <span>Total Reviews</span>
+          <strong>{{ stats.reviews }}</strong>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="feed-grid">
+    <article class="panel feed-card">
+      <div class="panel-head">
+        <h3>Recent Contact Messages</h3>
+      </div>
+      <div *ngIf="recentMessages.length > 0; else emptyMessages">
+        <div class="feed-item" *ngFor="let msg of recentMessages">
+          <div class="feed-top">
+            <strong>{{ msg.name || 'Anonymous' }}</strong>
+            <span>{{ msg.createdAt | date:'short' }}</span>
+          </div>
+          <p>{{ msg.message || 'No message body' }}</p>
+        </div>
+      </div>
+      <ng-template #emptyMessages>
+        <p class="empty">No recent messages.</p>
+      </ng-template>
+    </article>
+
+    <article class="panel feed-card">
+      <div class="panel-head">
+        <h3>Recent Reviews</h3>
+      </div>
+      <div *ngIf="recentReviews.length > 0; else emptyReviews">
+        <div class="feed-item" *ngFor="let review of recentReviews">
+          <div class="feed-top">
+            <strong>{{ review.providerId?.name || 'Provider' }}</strong>
+            <span>{{ (review.review?.createdAt ? review.review?.createdAt : review.createdAt) | date:'short' }}</span>
+          </div>
+          <p>{{ review.review?.response || 'No review text' }}</p>
+        </div>
+      </div>
+      <ng-template #emptyReviews>
+        <p class="empty">No recent reviews.</p>
+      </ng-template>
+    </article>
+  </section>
+</div>

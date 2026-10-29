@@ -1,0 +1,42 @@
+<div class="history-container">
+
+  <h2>Job History</h2>
+
+  <!-- empty state -->
+  <p *ngIf="history.length === 0">
+    No completed jobs yet.
+  </p>
+
+  <!-- job list -->
+  <div *ngFor="let job of history" class="history-card">
+
+    <h3>{{ job.serviceName }}</h3>
+
+    <p><strong>Customer:</strong> {{ getCustomerName(job) }}</p>
+
+    <p><strong>Address:</strong> {{ job.address }}</p>
+
+    <p>
+      <strong>Status:</strong>
+      <span
+        [class.completed]="job.status === 'completed'"
+        [class.rejected]="job.status === 'rejected'">
+        {{ job.status }}
+      </span>
+    </p>
+
+    <p class="date">
+      {{ job.updatedAt | date:'medium' }}
+    </p>
+
+    <p><strong>Payment Method:</strong>
+  {{ job.paymentMethod || 'Not selected' }}
+</p>
+
+<p><strong>Payment Status:</strong>
+  {{ job.paymentStatus }}
+</p>
+
+  </div>
+
+</div>
