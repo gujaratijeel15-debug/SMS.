@@ -78,12 +78,14 @@ async function ensureDefaultAdmin() {
 }
 
 // ---------- DATABASE ----------
-mongoose.connect('mongodb://127.0.0.1:27017/serviceDB')
+
+mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
-    console.log('MongoDB Connected');
+    console.log('MongoDB Atlas Connected');
     await ensureDefaultAdmin();
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error('MongoDB connection error:', err));
+
 
 // ---------- SERVER ----------
 const PORT = 5000;
