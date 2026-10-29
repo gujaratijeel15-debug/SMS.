@@ -37,6 +37,9 @@
     "express": "^4.19.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.8.1",
+    "zone": {
+      "js": "~0.14.10"
+    },
     "zone.js": "^0.14.10"
   },
   "devDependencies": {
