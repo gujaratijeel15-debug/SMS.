@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ProviderService {
 
-  private baseUrl = 'http://localhost:5000/api/bookings';
+  private baseUrl = 'https://sms-backend-jeel.onrender.com/api/bookings';
 
   constructor(private http: HttpClient) {}
 
@@ -30,24 +30,24 @@ export class ProviderService {
  
   // Provider profile endpoints
   getProfile() {
-    return this.http.get<any>('http://localhost:5000/api/users/profile');
+    return this.http.get<any>('https://sms-backend-jeel.onrender.com/api/users/profile');
   }
 
   updateProfile(data: any) {
-    return this.http.put<any>('http://localhost:5000/api/users/profile', data);
+    return this.http.put<any>('https://sms-backend-jeel.onrender.com/api/users/profile', data);
   }
 
   // pending bookings
   getPendingBookings() {
     return this.http.get(
-      'http://localhost:5000/api/bookings/provider/pending'
+      'https://sms-backend-jeel.onrender.com/api/bookings/provider/pending'
     );
   }
 
   // accept
   acceptBooking(id: string) {
     return this.http.put(
-      `http://localhost:5000/api/bookings/${id}/accept`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/${id}/accept`,
       {}
     );
   }
@@ -55,14 +55,14 @@ export class ProviderService {
   // active jobs
   getActiveJobs() {
     return this.http.get(
-      'http://localhost:5000/api/bookings/provider/active'
+      'https://sms-backend-jeel.onrender.com/api/bookings/provider/active'
     );
   }
 
   // complete job
   completeBooking(id: string) {
     return this.http.put(
-      `http://localhost:5000/api/bookings/${id}/complete`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/${id}/complete`,
       {}
     );
   }
@@ -70,28 +70,28 @@ export class ProviderService {
   // job history
   getJobHistory() {
     return this.http.get<any[]>(
-      'http://localhost:5000/api/bookings/provider/history'
+      'https://sms-backend-jeel.onrender.com/api/bookings/provider/history'
     );
   }
 
   // dashboard stats
   getDashboardStats() {
     return this.http.get<any>(
-      'http://localhost:5000/api/bookings/provider/stats'
+      'https://sms-backend-jeel.onrender.com/api/bookings/provider/stats'
     );
   }
 
   // notification count
 getNotifications() {
   return this.http.get<any>(
-    'http://localhost:5000/api/bookings/provider/notifications'
+    'https://sms-backend-jeel.onrender.com/api/bookings/provider/notifications'
   );
 }
 
 // earnings
 getEarnings() {
   return this.http.get<any>(
-    'http://localhost:5000/api/bookings/provider/earnings'
+    'https://sms-backend-jeel.onrender.com/api/bookings/provider/earnings'
   );
 }
 
@@ -99,7 +99,7 @@ getEarnings() {
 
 markPaymentPaid(id: string) {
   return this.http.put(
-    `http://localhost:5000/api/bookings/${id}/mark-paid`,
+    `https://sms-backend-jeel.onrender.com/api/bookings/${id}/mark-paid`,
     {}
   );
 }

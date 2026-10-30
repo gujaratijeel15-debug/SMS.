@@ -115,7 +115,7 @@ npm run dev
 The backend runs on:
 
 ```text
-http://localhost:5000
+https://sms-backend-jeel.onrender.com
 ```
 
 ### 5. Install frontend dependencies

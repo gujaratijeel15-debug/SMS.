@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
 
   // Centralize your API URLs
-  private BOOKING_API = 'http://localhost:5000/api/bookings';
-  private USER_API = 'http://localhost:5000/api/users';
+  private BOOKING_API = 'https://sms-backend-jeel.onrender.com/api/bookings';
+  private USER_API = 'https://sms-backend-jeel.onrender.com/api/users';
 
   // 🔥 1. THE BRAIN: Holds current user data so Navbar updates instantly
   private userSubject = new BehaviorSubject<any>(this.getUserFromStorage());
@@ -45,14 +45,14 @@ export class UserService {
   // 🔥 New: Allow cancelling a booking
 cancelBooking(id: string) {
   return this.http.delete(
-    `http://localhost:5000/api/bookings/${id}`
+    `https://sms-backend-jeel.onrender.com/api/bookings/${id}`
   );
 }
 
 
 chooseCashPayment(id: string) {
   return this.http.post(
-    `http://localhost:5000/api/bookings/${id}/cash-payment`,
+    `https://sms-backend-jeel.onrender.com/api/bookings/${id}/cash-payment`,
     {}
   );
 }
@@ -62,13 +62,13 @@ chooseCashPayment(id: string) {
 
 getProfile() {
   return this.http.get<any>(
-    'http://localhost:5000/api/users/profile'
+    'https://sms-backend-jeel.onrender.com/api/users/profile'
   );
 }
 
 updateProfile(data: any) {
   return this.http.put(
-    'http://localhost:5000/api/users/profile',
+    'https://sms-backend-jeel.onrender.com/api/users/profile',
     data
   );
 }
@@ -82,7 +82,7 @@ updateProfile(data: any) {
 
   submitReview(bookingId: string, payload: { rating: number; response: string }) {
     return this.http.put(
-      `http://localhost:5000/api/bookings/${bookingId}/review`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/${bookingId}/review`,
       payload
     );
   }

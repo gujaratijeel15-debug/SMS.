@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private API = 'http://localhost:5000/api/auth';
+  private API = 'https://sms-backend-jeel.onrender.com/api/auth';
   private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}
@@ -37,7 +37,7 @@ logout() {
 
   resetPassword(data: any) {
   return this.http.post(
-    'http://localhost:5000/api/auth/reset-password',
+    'https://sms-backend-jeel.onrender.com/api/auth/reset-password',
     data
   );
 }

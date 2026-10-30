@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class AdminService {
 
-  private API = 'http://localhost:5000/api/admin';
+  private API = 'https://sms-backend-jeel.onrender.com/api/admin';
 
   constructor(private http: HttpClient) {}
 

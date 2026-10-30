@@ -10,14 +10,14 @@ export class PaymentService {
 
   createOrder(bookingId: string) {
     return this.http.post(
-      `http://localhost:5000/api/bookings/${bookingId}/create-order`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/${bookingId}/create-order`,
       {}
     );
   }
 
   verifyPayment(bookingId: string, data: any) {
     return this.http.post(
-      `http://localhost:5000/api/bookings/${bookingId}/verify-payment`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/${bookingId}/verify-payment`,
       data
     );
   }

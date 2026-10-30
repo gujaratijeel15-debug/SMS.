@@ -7,7 +7,7 @@ export const sessionResolver: ResolveFn<boolean> = () => {
   const http = inject(HttpClient);
   const router = inject(Router);
 
-  return http.get('http://localhost:5000/api/users/me', { withCredentials: true }).pipe(
+  return http.get('https://sms-backend-jeel.onrender.com/api/users/me', { withCredentials: true }).pipe(
     map(() => true),
     catchError(() => {
       router.navigate(['/auth/login']);

@@ -45,7 +45,7 @@ isAvailable = false;
   }
 
   loadProviderServices() {
-    this.http.get<any[]>('http://localhost:5000/api/services').subscribe({
+    this.http.get<any[]>('https://sms-backend-jeel.onrender.com/api/services').subscribe({
       next: (res) => {
         const names = (Array.isArray(res) ? res : [])
           .map(item => String(item?.name || '').trim())

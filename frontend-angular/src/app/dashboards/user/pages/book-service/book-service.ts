@@ -55,7 +55,7 @@ ngOnInit() {
 }
 
   loadServices() {
-    this.http.get<BookableService[]>('http://localhost:5000/api/services').subscribe({
+    this.http.get<BookableService[]>('https://sms-backend-jeel.onrender.com/api/services').subscribe({
       next: (res) => {
         const rows = Array.isArray(res) ? res : [];
         this.services = rows.map(service => {
@@ -108,7 +108,7 @@ ngOnInit() {
     });
 
     this.http.get<any>(
-      `http://localhost:5000/api/bookings/providers/by-service/${encodeURIComponent(serviceName)}`,
+      `https://sms-backend-jeel.onrender.com/api/bookings/providers/by-service/${encodeURIComponent(serviceName)}`,
       { headers }
     ).subscribe({
       next: (res) => {
@@ -201,7 +201,7 @@ const headers = new HttpHeaders({
 });
 
 this.http.post(
-  'http://localhost:5000/api/bookings',
+  'https://sms-backend-jeel.onrender.com/api/bookings',
   bookingData,
   { headers }
 ).subscribe({

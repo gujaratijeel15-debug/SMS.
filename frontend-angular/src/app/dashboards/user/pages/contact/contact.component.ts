@@ -41,7 +41,7 @@ export class ContactComponent {
 
     this.loading = true;
 
-    this.http.post('http://localhost:5000/api/contact', payload).subscribe({
+    this.http.post('https://sms-backend-jeel.onrender.com/api/contact', payload).subscribe({
       next: () => {
         this.loading = false;
         this.successMsg =
